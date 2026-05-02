@@ -161,7 +161,7 @@ export const socialLinks = {
 };
 
 export const contactInfo = {
-  email: "nicknyjel68@gmail.com",
+  email: "nicknygel68@gmail.com",
   phone: "+254 795 101 750",
   location: "Nairobi, Kenya",
   hours: "Mon - Sat: 6:00 AM - 8:00 PM"
