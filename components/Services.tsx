@@ -1,7 +1,6 @@
 'use client'
 import React from 'react';
 import { Dumbbell, Monitor, Camera, Apple, Check, ArrowRight } from 'lucide-react';
-import { Button } from './ui/button';
 import { servicesData } from '../data/nick';
 
 type IconName = 'Dumbbell' | 'Monitor' | 'Camera' | 'Apple';
@@ -73,14 +72,13 @@ const Services = () => {
                 </ul>
 
                 {/* CTA */}
-                <Button
+                <button
                   onClick={scrollToContact}
-                  variant="outline"
-                  className="w-full border-2 border-neutral-700 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-black font-semibold py-6 rounded-full transition-all duration-300 group/btn"
+                  className="w-full border-2 border-neutral-700 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-black font-semibold py-6 rounded-full transition-all duration-300 group/btn flex items-center justify-center"
                 >
                   Get Started
                   <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
+                </button>
               </div>
             );
           })}

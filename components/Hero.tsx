@@ -1,7 +1,6 @@
 'use client'
 import React from 'react';
 import { ArrowRight, MapPin } from 'lucide-react';
-import { Button } from './ui/button';
 import { heroData } from '../data/nick';
 
 const Hero = () => {
@@ -54,20 +53,19 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button
+              <button
                 onClick={() => scrollToSection('#contact')}
-                className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 sm:px-8 py-5 sm:py-6 rounded-full text-base sm:text-lg transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-1 group"
+                className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 sm:px-8 py-5 sm:py-6 rounded-full text-base sm:text-lg transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-1 group flex items-center justify-center"
               >
                 {heroData.cta.primary}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={() => scrollToSection('#gallery')}
-                variant="outline"
-                className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-amber-500 font-semibold px-6 sm:px-8 py-5 sm:py-6 rounded-full text-base sm:text-lg transition-all duration-300"
+                className="border-2 border-white/30 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-black font-semibold px-6 sm:px-8 py-5 sm:py-6 rounded-full text-base sm:text-lg transition-all duration-300"
               >
                 {heroData.cta.secondary}
-              </Button>
+              </button>
             </div>
           </div>
 
