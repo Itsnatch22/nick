@@ -1,21 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import ContactEmail from '../../../emails/ContactEmail';
 import { contactSchema } from '@/lib/validation/contact';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
-    // Validate the request body
     const validationResult = contactSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -26,28 +17,21 @@ export async function POST(request: NextRequest) {
 
     const { name, email, phone, service, message } = validationResult.data;
 
-    const { error: supabaseError } = await supabase
-      .from('inquiry')
-      .insert({
-        name,
-        email,
-        phone,
-        service,
-        message,
-      });
+    const { CONTACT_EMAIL, FROM_EMAIL, RESEND_API_KEY } = process.env;
 
-    if (supabaseError) {
-      console.error('Supabase error:', supabaseError);
+    if (!CONTACT_EMAIL || !FROM_EMAIL || !RESEND_API_KEY) {
+      console.error('Contact email configuration is missing');
       return NextResponse.json(
-        { error: 'Failed to store inquiry' },
+        { error: 'Contact email is not configured' },
         { status: 500 }
       );
     }
 
     try {
-      const { data, error: emailError } = await resend.emails.send({
-        from: process.env.FROM_EMAIL!,
-        to: process.env.CONTACT_EMAIL!,
+      const resend = new Resend(RESEND_API_KEY);
+      const { error: emailError } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: CONTACT_EMAIL,
         subject: `New Contact Inquiry: ${service} - ${name}`,
         react: ContactEmail({
           name,
@@ -61,11 +45,17 @@ export async function POST(request: NextRequest) {
 
       if (emailError) {
         console.error('Email error:', emailError);
-        // Don't fail the request if email fails, just log it
+        return NextResponse.json(
+          { error: 'Failed to send inquiry' },
+          { status: 500 }
+        );
       }
     } catch (emailError) {
       console.error('Email sending failed:', emailError);
-      // Don't fail the request if email fails, just log it
+      return NextResponse.json(
+        { error: 'Failed to send inquiry' },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(
